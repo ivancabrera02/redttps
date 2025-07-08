@@ -32,29 +32,29 @@
   <!-- Contenido de la técnica -->
   <main class="flex-1 p-6">
     <div class="content-box p-6 rounded-xl max-w-4xl mx-auto">
-      <h2 class="text-2xl font-bold glow-text mb-4">Chrome Remote Desktop</h2>
+      <h2 class="text-2xl font-bold glow-text mb-4">Lsass dump using Magnet</h2>
 
       <section class="mb-6">
         <h3 class="text-xl font-semibold glow-text mb-2">Introduction</h3>
-        <p>Chrome Remote Desktop (CRD) is a free remote access tool developed by Google that allows users to securely connect to another computer over the internet using the Google Chrome browser or a dedicated application.</p>
+        <p>         This technique involves extracting the contents of the LSASS (Local Security Authority Subsystem Service) process from memory using a forensic memory acquisition tool, Magnet RAM Capture, to later analyze it offline.</p>
       <section class="mb-6">
         <h3 class="text-xl font-semibold glow-text mb-2">KQL</h3>
         <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
-DeviceProcessEvents
-| where (
-        // Silent installation 
-        FileName =~ "msiexec.exe"
-        and ProcessCommandLine has "chromeremotedesktophost.msi"
-        and ProcessCommandLine has "/i"
-        and ProcessCommandLine has "/qn"
-    )
-    or (
-        // Detect command line with undocumented argument
-        FileName =~ "remoting_host.exe"
-        and ProcessCommandLine has "--pin="
-    )
-| project Timestamp, DeviceName, FileName, ProcessCommandLine, InitiatingProcessAccountName, InitiatingProcessFileName
-| order by Timestamp desc
+let suspiciousProc = DeviceProcessEvents
+| where ProcessCommandLine has_all ("/accepteula", "/silent", "/go")
+| project ProcessCreationTime=Timestamp, DeviceId, DeviceName, SuspectExe=FileName, ProcessCommandLine, InitiatingProcessAccountName, InitiatingProcessId, ProcessId;
+
+let rawFiles = DeviceFileEvents
+| where FileName endswith ".raw"
+| where ActionType == "FileCreated"
+| project FileCreationTime=Timestamp, DeviceId, DeviceName, FileName, FolderPath, InitiatingProcessFileName, InitiatingProcessId;
+
+suspiciousProc
+| join kind=inner (rawFiles) on DeviceId
+| where FileCreationTime between (ProcessCreationTime .. ProcessCreationTime + 30m)
+| project FileCreationTime, ProcessCreationTime, DeviceName, SuspectExe, FileName, FolderPath, ProcessCommandLine, InitiatingProcessAccountName
+| order by FileCreationTime desc
+
         </pre>
           
       </section>
