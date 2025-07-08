@@ -32,27 +32,23 @@
   <!-- Contenido de la técnica -->
   <main class="flex-1 p-6">
     <div class="content-box p-6 rounded-xl max-w-4xl mx-auto">
-      <h2 class="text-2xl font-bold glow-text mb-4">Lsass Dump using Magnet RAM Capture</h2>
+      <h2 class="text-2xl font-bold glow-text mb-4">C2 Google Calendar</h2>
 
       <section class="mb-6">
         <h3 class="text-xl font-semibold glow-text mb-2">Description</h3>
         <p>
-         This technique involves extracting the contents of the LSASS (Local Security Authority Subsystem Service) process from memory using a forensic memory acquisition tool, Magnet RAM Capture, to later analyze it offline. The goal is typically to retrieve sensitive credential material (like plaintext passwords, NTLM hashes, or Kerberos tickets) stored in memory by the LSASS process.
-        </p>
-      </section>
+Command and Control (C2) using Google Calendar is a stealthy exfiltration and communication technique that abuses the legitimate infrastructure of Google Calendar to send and receive data between a compromised host and an attacker-controlled calendar.      </section>
 
       <section class="mb-6">
         <h3 class="text-xl font-semibold glow-text mb-2">Steps</h3>
         <ol class="list-decimal list-inside space-y-2 break-words">
-          <li>Download tool: https://www.magnetforensics.com/resources/magnet-ram-capture/</li>
-          <li>Use GUI or commandline:</li>
+          <li>Download tool: https://github.com/MrSaighnal/GCR-Google-Calendar-RAT</li>
+          <li>Tutorial: https://chennylmf.medium.com/unveiling-the-cunning-a-demo-of-google-calendar-rat-exploiting-calendar-service-for-c2-operations-d6ee0b2f8011</li>
+          <h3 class="text-xl font-semibold glow-text mb-2">Improving Opsec</h3>
+          <li>Re-implements the technique in another language</li>
+          <li>Add the login credentials to the code to avoid downloading the credentials.json file</li>
+          <li>Random delay between requests</li>
         </ol>
-      </section>
-
-      <section class="mb-6">
-        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
-MRCv120.exe /accepteula /silent /go
-        </pre>
       </section>
     </div>
   </main>

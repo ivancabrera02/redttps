@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Técnica - redttps</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #ffffff;
+      font-family: monospace;
+    }
+    .content-box {
+      border: 2px dashed #00ff00;
+      background-color: #1a1a1a;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="w-full bg-black text-green-400 p-4 flex justify-between items-center shadow-md">
+    <h1 class="text-2xl font-bold glow-text">redttps</h1>
+    <nav class="space-x-4">
+      <a href="../index.html" class="hover:underline">Home</a>
+      <a href="../internals.html" class="hover:underline">Hunting</a>
+      <a href="#" class="hover:underline">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Contenido de la técnica -->
+  <main class="flex-1 p-6">
+    <div class="content-box p-6 rounded-xl max-w-4xl mx-auto">
+      <h2 class="text-2xl font-bold glow-text mb-4">Enumerating AD with ADSI</h2>
+
+      <section class="mb-6">
+        <h3 class="text-xl font-semibold glow-text mb-2">Description</h3>
+        <p>
+ADSI (Active Directory Service Interfaces) is a set of COM interfaces provided by Windows that allows scripts or programs to interact with Active Directory. Red teams and attackers can use ADSI in PowerShell or VBScript to query domain objects (users, groups, computers, OUs) without importing any external tools, making it stealthy and effective.      </section>
+
+      <section class="mb-6">
+        <h3 class="text-xl font-semibold glow-text mb-2">Domain Enumeration Using PowerShell</h3>
+        <ol class="list-decimal list-inside space-y-2 break-words">
+          <li>List DCs:</li>
+        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+([System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()).DomainControllers | ForEach-Object { $_.Name }</pre>
+          <li>List DCs 2:</li>
+          <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+([adsisearcher]'(&(objectCategory=computer)(primaryGroupID=516))').FindAll()
+</pre>
+<li>Get information about a user:</li>
+          <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+$userSearcher = [System.DirectoryServices.DirectorySearcher]'(&(objectClass=user)(sAMAccountName='Username'))'
+$userSearcher.FindOne().Properties</pre>
+ <li>List groups:</li>
+          <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+([ADSISearcher]"(&(ObjectClass=group))").FindAll() | ForEach-Object { $_.Properties['member'] | ForEach-Object { $_ } }
+</pre>
+<li>Show members of a group:</li>
+          <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+([ADSISearcher]"(&(ObjectClass=group)(sAMAccountName='GroupName'))").FindOne().Properties['member'] | ForEach-Object { $_ }
+</pre>
+<li>Show which groups a user belongs to:</li>
+          <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+([ADSISearcher]"(&(ObjectClass=user)(sAMAccountName='Username'))").FindOne().Properties['memberOf'] | ForEach-Object { $_ }
+</pre>
+<li>List all computers in the domain:</li>
+          <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+([ADSISearcher]"ObjectClass=computer").FindAll() | ForEach-Object { $_.Properties['name'][0] }
+</pre>
+<li>Returns information about a computer:</li>
+          <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+([ADSISearcher]"(&(ObjectClass=computer)(ObjectCategory=computer)(cn='Computer Name'))").FindOne().Properties
+</pre>
+<li>Lists and returns information about the OUs (Organizational Units):</li>
+          <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+([ADSISearcher]"ObjectClass=organizationalUnit").FindAll() | ForEach-Object { $_.Properties }
+</pre>
+<li>Returns information about GPOs (Group Policy Objects):</li>
+          <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+([ADSISearcher]"ObjectClass=groupPolicyContainer").FindAll() | ForEach-Object { $_.Properties }
+</pre>
+<li>Enumerates all users in the domain:</li>
+          <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+([ADSISearcher]"ObjectClass=user").FindAll() | ForEach-Object { $_.Properties['sAMAccountName'][0] }
+</pre>
+<li>Returns users who are members of protected groups:</li>
+          <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+([adsisearcher]'(&(objectClass=user)(adminCount=1))').FindAll()
+</pre>
+<li>Returns accounts configured with Unconstrained Delegation:</li>
+          <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+([adsisearcher]'(&(objectCategory=user)(userAccountControl:1.2.840.113556.1.4.803:=524288))').FindAll()
+</pre>
+<li>Enumerates all ACLs:</li>
+          <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+$ADSI=[ADSI]"LDAP://DC=dominio,DC=com"
+$ADSI.psbase.get_ObjectSecurity().getAccessRules($true, $true,[system.security.principal.NtAccount])
+</pre>
+        </ol>
+      </section>
+  
+    </div>
+  </main>
+
+</body>
+</html>

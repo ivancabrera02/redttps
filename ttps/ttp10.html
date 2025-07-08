@@ -32,27 +32,25 @@
   <!-- Contenido de la técnica -->
   <main class="flex-1 p-6">
     <div class="content-box p-6 rounded-xl max-w-4xl mx-auto">
-      <h2 class="text-2xl font-bold glow-text mb-4">Lsass Dump using Magnet RAM Capture</h2>
+      <h2 class="text-2xl font-bold glow-text mb-4">Tunnel using Rust</h2>
 
       <section class="mb-6">
         <h3 class="text-xl font-semibold glow-text mb-2">Description</h3>
         <p>
-         This technique involves extracting the contents of the LSASS (Local Security Authority Subsystem Service) process from memory using a forensic memory acquisition tool, Magnet RAM Capture, to later analyze it offline. The goal is typically to retrieve sensitive credential material (like plaintext passwords, NTLM hashes, or Kerberos tickets) stored in memory by the LSASS process.
-        </p>
-      </section>
-
+A tunnel in networking refers to encapsulating one network protocol within another. In Rust, such a tunnel might be implemented to create a VPN, proxy, or port-forwarding system.
       <section class="mb-6">
         <h3 class="text-xl font-semibold glow-text mb-2">Steps</h3>
         <ol class="list-decimal list-inside space-y-2 break-words">
-          <li>Download tool: https://www.magnetforensics.com/resources/magnet-ram-capture/</li>
-          <li>Use GUI or commandline:</li>
-        </ol>
-      </section>
-
-      <section class="mb-6">
-        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
-MRCv120.exe /accepteula /silent /go
+          <li>Install localtunnel: cargo install localtunnel</li>
+          <li>Client-Side:</li>
+          <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+localtunnel client --host 'hostname' --subdomain 'domain' --port 'port'
         </pre>
+          <li>Server-Side: </li>
+        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+localtunnel server --secure --domain init.so --port 'local port' --proxy-port 'proxy port'
+        </pre>
+        </ol>
       </section>
     </div>
   </main>
