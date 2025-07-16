@@ -33,24 +33,18 @@
   <!-- Contenido de la técnica -->
   <main class="flex-1 p-6">
     <div class="content-box p-6 rounded-xl max-w-4xl mx-auto">
-      <h2 class="text-2xl font-bold glow-text mb-4">Tunnel using Rust</h2>
+      <h2 class="text-2xl font-bold glow-text mb-4">WDAC to kill EDRs</h2>
 
       <section class="mb-6">
         <h3 class="text-xl font-semibold glow-text mb-2">Description</h3>
         <p>
-A tunnel in networking refers to encapsulating one network protocol within another. In Rust, such a tunnel might be implemented to create a VPN, proxy, or port-forwarding system.
-      <section class="mb-6"><br>
-        <h3 class="text-xl font-semibold glow-text mb-2">Steps</h3>
+The WDAC (Windows Defender Application Control) technique to kill EDR (Endpoint Detection and Response) involves abusing Microsoft’s application control policies to bypass or disable security software. Attackers can exploit misconfigurations or weaknesses in WDAC policies to run unsigned or malicious code that disables or interferes with EDR processes      <section class="mb-6"><br>
+        <h3 class="text-xl font-semibold glow-text mb-2">How it works</h3>
         <ol class="list-decimal list-inside space-y-2 break-words">
-          <li>Install localtunnel: cargo install localtunnel</li>
-          <li>Client-Side:</li>
-          <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
-localtunnel client --host 'hostname' --subdomain 'domain' --port 'port'
-        </pre>
-          <li>Server-Side: </li>
-        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
-localtunnel server --secure --domain init.so --port 'local port' --proxy-port 'proxy port'
-        </pre>
+        <li>On your computer, download the App Control Policy Wizard application from Microsoft: https://webapp-wdac-wizard.azurewebsites.net/</li>
+        <li>Open the tool and follow the steps below: Policy Creator > Singel Policy Format > Default Windows Mode > Enable Disable Runtime Filepath Rules > Disable Audit Mode</li>
+        <li>Now go to Add Custom and create a custom policy. You will see several options such as creating an exclusion, locking a file by hash, it depends on your needs</li>
+        <li>When you are done save the policy, download SiPolicy.p7b file in the target pc and place in C:\Windows\System32\CodeIntegrity (Admin privileges needed) reboot and the policy will be applied</li>
         </ol>
       </section>
     </div>

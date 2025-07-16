@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hunting - redttps</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="../favicon.png" type="image/png">
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #ffffff;
+      font-family: monospace;
+    }
+    .content-box {
+      border: 2px dashed #00ff00;
+      background-color: #1a1a1a;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="w-full bg-black text-green-400 p-4 flex justify-between items-center shadow-md">
+    <h1 class="text-2xl font-bold glow-text">redttps</h1>
+    <nav class="space-x-4">
+      <a href="../index.html" class="hover:underline">Home</a>
+      <a href="../internals.html" class="hover:underline">Hunting</a>
+      <a href="../myself.html" class="hover:underline">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Contenido de la técnica -->
+  <main class="flex-1 p-6">
+    <div class="content-box p-6 rounded-xl max-w-4xl mx-auto">
+      <h2 class="text-2xl font-bold glow-text mb-4">IP detected in lolbin</h2>
+
+      <section class="mb-6">
+        <h3 class="text-xl font-semibold glow-text mb-2">Introduction</h3>
+        <p>         This query returns all LOLbins that refer to a remote IP in the commandline. These remote IPs can be used to make connections for lateral movement or to remotely upload or download files.</p>
+      <section class="mb-6">
+        <h3 class="text-xl font-semibold glow-text mb-2">KQL</h3>
+        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+let IPRegex = '[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}';
+let LOLBins = dynamic(["AppInstaller.exe", "cmd.exe", "Aspnet_Compiler.exe", "At.exe", "Atbroker.exe", "Bash.exe", "Bitsadmin.exe", "CertOC.exe", "CertReq.exe", "Certutil.exe", "Cmdkey.exe", "cmdl32.exe", "Cmstp.exe", "ConfigSecurityPolicy.exe", "Conhost.exe", "Control.exe", "Csc.exe", "Cscript.exe", "CustomShellHost.exe", "DataSvcUtil.exe", "Desktopimgdownldr.exe", "DeviceCredentialDeployment.exe", "Dfsvc.exe", "Diantz.exe", "Diskshadow.exe", "Dnscmd.exe", "Esentutl.exe", "Eventvwr.exe", "Expand.exe", "Explorer.exe", "Extexport.exe", "Extrac32.exe", "Findstr.exe", "Finger.exe", "fltMC.exe", "Forfiles.exe", "Ftp.exe", "Gpscript.exe", "Hh.exe", "IMEWDBLD.exe", "Ie4uinit.exe", "Ieexec.exe", "Ilasm.exe", "Infdefaultinstall.exe", "Installutil.exe", "Jsc.exe", "Ldifde.exe", "Makecab.exe", "Mavinject.exe", "Msedge.exe", "Microsoft.Workflow.Compiler.exe", "Mmc.exe", "MpCmdRun.exe", "Msbuild.exe", "Msconfig.exe", "Msdt.exe", "Mshta.exe", "Msiexec.exe", "Netsh.exe", "Odbcconf.exe", "OfflineScannerShell.exe", "OneDriveStandaloneUpdater.exe", "Pcalua.exe", "Pcwrun.exe", "Pktmon.exe", "Pnputil.exe", "Presentationhost.exe", "Print.exe", "PrintBrm.exe", "Psr.exe", "Rasautou.exe", "rdrleakdiag.exe", "Reg.exe", "Regasm.exe", "Regedit.exe", "Regini.exe", "Register-cimprovider.exe", "Regsvcs.exe", "Regsvr32.exe", "Replace.exe", "Rpcping.exe", "Rundll32.exe", "Runexehelper.exe", "Runonce.exe", "Runscripthelper.exe", "Sc.exe", "Schtasks.exe", "Scriptrunner.exe", "Setres.exe", "SettingSyncHost.exe", "Stordiag.exe", "SyncAppvPublishingServer.exe", "Ttdinject.exe", "Tttracer.exe", "Unregmp2.exe", "vbc.exe", "Verclsid.exe", "Wab.exe", "winget.exe", "Wlrmdr.exe", "Wmic.exe", "WorkFolders.exe", "Wscript.exe", "Wsreset.exe", "wuauclt.exe", "Xwizard.exe", "fsutil.exe", "wt.exe", "GfxDownloadWrapper.exe", "Advpack.dll", "Desk.cpl", "Dfshim.dll", "Ieadvpack.dll", "Ieframe.dll", "Mshtml.dll", "Pcwutl.dll", "Setupapi.dll", "Shdocvw.dll", "Shell32.dll", "Syssetup.dll", "Url.dll", "Zipfldr.dll", "Comsvcs.dll", "AccCheckConsole.exe", "adplus.exe", "AgentExecutor.exe", "Appvlp.exe", "Bginfo.exe", "Cdb.exe", "coregen.exe", "Createdump.exe", "csi.exe", "DefaultPack.EXE", "Devinit.exe"]);
+DeviceNetworkEvents
+| where InitiatingProcessFileName in~ (LOLBins)
+| extend CommandLineIP = extract(IPRegex, 0, InitiatingProcessCommandLine)
+| where isnotempty(CommandLineIP)
+
+| project-reorder Timestamp, InitiatingProcessCommandLine, RemoteIP, DeviceName
+
+        </pre><br>
+          
+    <p>Reference: https://github.com/Bert-JanP/Hunting-Queries-Detection-Rules/blob/main/Defender%20For%20Endpoint/Living%20Off%20The%20Land/LOLBinRemoteIPCommandLine.md</p>    
+      </section>
+    </div>
+  </main>
+
+</body>
+</html>

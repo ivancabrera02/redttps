@@ -33,24 +33,20 @@
   <!-- Contenido de la técnica -->
   <main class="flex-1 p-6">
     <div class="content-box p-6 rounded-xl max-w-4xl mx-auto">
-      <h2 class="text-2xl font-bold glow-text mb-4">Tunnel using Rust</h2>
+      <h2 class="text-2xl font-bold glow-text mb-4">Klist to find tickets</h2>
 
       <section class="mb-6">
         <h3 class="text-xl font-semibold glow-text mb-2">Description</h3>
         <p>
-A tunnel in networking refers to encapsulating one network protocol within another. In Rust, such a tunnel might be implemented to create a VPN, proxy, or port-forwarding system.
+Klist is a command-line utility used to list the Kerberos tickets held in a user’s current credential cache. It displays information about the user’s Kerberos tickets, including the principal (Kerberos identity), ticket validity period, and the key distribution center (KDC) that issued the tickets.
       <section class="mb-6"><br>
         <h3 class="text-xl font-semibold glow-text mb-2">Steps</h3>
         <ol class="list-decimal list-inside space-y-2 break-words">
-          <li>Install localtunnel: cargo install localtunnel</li>
-          <li>Client-Side:</li>
-          <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
-localtunnel client --host 'hostname' --subdomain 'domain' --port 'port'
-        </pre>
-          <li>Server-Side: </li>
+          <li>Run the command and see what tickets you have</li>
         <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
-localtunnel server --secure --domain init.so --port 'local port' --proxy-port 'proxy port'
-        </pre>
+klist.exe        
+</pre>
+<li>If you find a ticket for a service like MSSQL you can dump the ticket with Rubeus dump or similar tools</li>
         </ol>
       </section>
     </div>

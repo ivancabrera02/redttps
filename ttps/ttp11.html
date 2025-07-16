@@ -33,23 +33,42 @@
   <!-- Contenido de la técnica -->
   <main class="flex-1 p-6">
     <div class="content-box p-6 rounded-xl max-w-4xl mx-auto">
-      <h2 class="text-2xl font-bold glow-text mb-4">Tunnel using Rust</h2>
+      <h2 class="text-2xl font-bold glow-text mb-4">Enumerate ADCS using Certutil</h2>
 
       <section class="mb-6">
         <h3 class="text-xl font-semibold glow-text mb-2">Description</h3>
         <p>
-A tunnel in networking refers to encapsulating one network protocol within another. In Rust, such a tunnel might be implemented to create a VPN, proxy, or port-forwarding system.
+Certutil (short for Certificate Utility) is a command-line program that is used to manage and manipulate certificates and certification authority (CA) data on Windows systems.
       <section class="mb-6"><br>
-        <h3 class="text-xl font-semibold glow-text mb-2">Steps</h3>
+        <h3 class="text-xl font-semibold glow-text mb-2">Cheatsheet</h3>
         <ol class="list-decimal list-inside space-y-2 break-words">
-          <li>Install localtunnel: cargo install localtunnel</li>
-          <li>Client-Side:</li>
+          <li>General information about certificates</li>
           <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
-localtunnel client --host 'hostname' --subdomain 'domain' --port 'port'
+certutil -dump
         </pre>
-          <li>Server-Side: </li>
+          <li>Local (CA) information</li>
         <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
-localtunnel server --secure --domain init.so --port 'local port' --proxy-port 'proxy port'
+certutil -ca
+        </pre>
+        <li>List all local certificate templates</li>
+        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+certutil -catemplates
+        </pre>
+        <li>List all certificate templates in detail mode</li>
+        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+certutil -v -template
+        </pre>
+        <li>Detailed information on all certificate templates</li>
+        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+certutil -v -dstemplate
+        </pre>
+        <li>Lists all the certificate templates that support client authentication</li>
+        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+certutil -v -template -clientauth
+        </pre>
+        <li>Displays detailed information about a specific template (ESC1)</li>
+        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+certutil -template ESC1
         </pre>
         </ol>
       </section>

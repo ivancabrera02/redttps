@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Technique - redttps</title>
+  <title>Hunting - redttps</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="icon" href="../favicon.png" type="image/png">
   <style>
@@ -33,25 +33,21 @@
   <!-- Contenido de la técnica -->
   <main class="flex-1 p-6">
     <div class="content-box p-6 rounded-xl max-w-4xl mx-auto">
-      <h2 class="text-2xl font-bold glow-text mb-4">Tunnel using Rust</h2>
+      <h2 class="text-2xl font-bold glow-text mb-4">Certutil download</h2>
 
       <section class="mb-6">
-        <h3 class="text-xl font-semibold glow-text mb-2">Description</h3>
-        <p>
-A tunnel in networking refers to encapsulating one network protocol within another. In Rust, such a tunnel might be implemented to create a VPN, proxy, or port-forwarding system.
-      <section class="mb-6"><br>
-        <h3 class="text-xl font-semibold glow-text mb-2">Steps</h3>
-        <ol class="list-decimal list-inside space-y-2 break-words">
-          <li>Install localtunnel: cargo install localtunnel</li>
-          <li>Client-Side:</li>
-          <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
-localtunnel client --host 'hostname' --subdomain 'domain' --port 'port'
-        </pre>
-          <li>Server-Side: </li>
+        <h3 class="text-xl font-semibold glow-text mb-2">Introduction</h3>
+        <p> Certutil is a legitimate command-line utility included in Windows for managing certificates. However, attackers often abuse certutil as a living-off-the-land binary (LOLBin) to download malicious files or exfiltrate data without triggering traditional security alerts. Using certutil to download files allows threat actors to bypass some security controls by blending in with normal system activity. </p>
+      <section class="mb-6">
+        <h3 class="text-xl font-semibold glow-text mb-2">KQL</h3>
         <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
-localtunnel server --secure --domain init.so --port 'local port' --proxy-port 'proxy port'
+DeviceProcessEvents
+| where FileName == "certutil.exe"
+| where tolower(ProcessCommandLine) has_all ("http", "urlcache", "-f")
+| project-reorder Timestamp, ProcessCommandLine, FileName, InitiatingProcessAccountUpn
+
         </pre>
-        </ol>
+          
       </section>
     </div>
   </main>

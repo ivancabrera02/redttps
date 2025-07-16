@@ -33,26 +33,23 @@
   <!-- Contenido de la técnica -->
   <main class="flex-1 p-6">
     <div class="content-box p-6 rounded-xl max-w-4xl mx-auto">
-      <h2 class="text-2xl font-bold glow-text mb-4">Tunnel using Rust</h2>
+      <h2 class="text-2xl font-bold glow-text mb-4">Enumerate ADCS using Windows Registry</h2>
 
       <section class="mb-6">
         <h3 class="text-xl font-semibold glow-text mb-2">Description</h3>
         <p>
-A tunnel in networking refers to encapsulating one network protocol within another. In Rust, such a tunnel might be implemented to create a VPN, proxy, or port-forwarding system.
+Enumerate ADCS using Windows Registry means gathering information about Active Directory Certificate Services (ADCS) by inspecting relevant keys and values stored in the Windows Registry.
       <section class="mb-6"><br>
         <h3 class="text-xl font-semibold glow-text mb-2">Steps</h3>
         <ol class="list-decimal list-inside space-y-2 break-words">
-          <li>Install localtunnel: cargo install localtunnel</li>
-          <li>Client-Side:</li>
-          <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
-localtunnel client --host 'hostname' --subdomain 'domain' --port 'port'
-        </pre>
-          <li>Server-Side: </li>
+          <li>Export HKEY_USERS\.DEFAULT\Software\Microsoft\Cryptography\CertificateTemplateCache to a .reg file</li>
+          <li>Exfiltrate the file and analyze it with certipy</li>
         <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
-localtunnel server --secure --domain init.so --port 'local port' --proxy-port 'proxy port'
+certipy parse -format reg -domain test.com -ca test-CA -published "ESC13, ESC9, ESC7_CERTMGR, ESC4, ESC3_CRA, ESC3, ESC2, ESC1, DirectoryEmailReplication, DomainControllerAuthentication, KerberosAuthentication, EFSRecovery, EFS, DomainController, WebServer, Machine, User, SubCA, Administrator" -sids "S-1-5-21-3291837554-245906837-2404182060-513,S-1-5-21-3291837554-245906837-2404182060-1104" adcs.reg
         </pre>
         </ol>
-      </section>
+      </section><br>
+      <p>Reference: https://blog.compass-security.com/2025/02/stealthy-ad-cs-reconnaissance/</p>
     </div>
   </main>
 

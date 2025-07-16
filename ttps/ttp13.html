@@ -33,24 +33,24 @@
   <!-- Contenido de la técnica -->
   <main class="flex-1 p-6">
     <div class="content-box p-6 rounded-xl max-w-4xl mx-auto">
-      <h2 class="text-2xl font-bold glow-text mb-4">Tunnel using Rust</h2>
+      <h2 class="text-2xl font-bold glow-text mb-4">Find cloud credentials</h2>
 
       <section class="mb-6">
         <h3 class="text-xl font-semibold glow-text mb-2">Description</h3>
         <p>
-A tunnel in networking refers to encapsulating one network protocol within another. In Rust, such a tunnel might be implemented to create a VPN, proxy, or port-forwarding system.
+In modern cloud environments, authentication tokens are critical for securely accessing services and APIs across platforms like Azure, AWS, and Google Cloud Platform (GCP). On Windows systems, these tokens are typically stored locally by command-line tools or SDKs to maintain session state and allow seamless interaction with cloud resources. Understanding where these tokens are located helps administrators manage security, troubleshoot access issues, and ensure that credentials are properly protected.
       <section class="mb-6"><br>
-        <h3 class="text-xl font-semibold glow-text mb-2">Steps</h3>
+        <h3 class="text-xl font-semibold glow-text mb-2">Cheatsheet</h3>
         <ol class="list-decimal list-inside space-y-2 break-words">
-          <li>Install localtunnel: cargo install localtunnel</li>
-          <li>Client-Side:</li>
+          <li>Azure</li>
           <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
-localtunnel client --host 'hostname' --subdomain 'domain' --port 'port'
+%USERPROFILE%\.azure\accessTokens.json
+%USERPROFILE%\.azure\azureProfile.json
         </pre>
-          <li>Server-Side: </li>
+          <li>AWS</li>
         <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
-localtunnel server --secure --domain init.so --port 'local port' --proxy-port 'proxy port'
-        </pre>
+%USERPROFILE%\.aws\credentials
+%USERPROFILE%\.aws\config        </pre>
         </ol>
       </section>
     </div>
