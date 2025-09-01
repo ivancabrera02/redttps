@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Technique - redttps</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="../favicon.png" type="image/png">
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #ffffff;
+      font-family: monospace;
+    }
+    .content-box {
+      border: 2px dashed #00ff00;
+      background-color: #1a1a1a;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="w-full bg-black text-green-400 p-4 flex justify-between items-center shadow-md">
+    <h1 class="text-2xl font-bold glow-text">redttps</h1>
+    <nav class="space-x-4">
+      <a href="../index.html" class="hover:underline">Home</a>
+      <a href="../internals.html" class="hover:underline">Hunting</a>
+      <a href="../myself.html" class="hover:underline">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Contenido de la técnica -->
+  <main class="flex-1 p-6">
+    <div class="content-box p-6 rounded-xl max-w-4xl mx-auto">
+      <h2 class="text-2xl font-bold glow-text mb-4">MSI Files to evade detections</h2>
+
+      <section class="mb-6">
+        <h3 class="text-xl font-semibold glow-text mb-2">Description</h3>
+        <p>
+An MSI (Microsoft Installer) is a standard Windows installation package format (.msi files) used to deploy software. Because MSI files are common and trusted by default in many environments, attackers or red teamers sometimes abuse them</p>
+<br>        
+<h3 class="text-xl font-semibold glow-text mb-2">Why MSIs?</h3>
+        <ol class="list-decimal list-inside space-y-2 break-words">
+        <li>It has been evidenced that some EDRs are not able to correctly analyze MSI files, even when they are sent to their laboratory for analysis an error occurs</li>
+        <li>You have several options, you can create an MSI that installs something legitimate and executes a command or downloads a DLL behind it</li>
+        </ol><br>
+        <p>Reference: https://mgeeky.tech/msi-shenanigans-part-1/</p>
+
+      </section>
+    </div>
+  </main>
+
+</body>
+</html>
