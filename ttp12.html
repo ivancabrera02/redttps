@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Technique - redttps</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="../favicon.png" type="image/png">
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #ffffff;
+      font-family: monospace;
+    }
+    .content-box {
+      border: 2px dashed #00ff00;
+      background-color: #1a1a1a;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="w-full bg-black text-green-400 p-4 flex justify-between items-center shadow-md">
+    <h1 class="text-2xl font-bold glow-text">redttps</h1>
+    <nav class="space-x-4">
+      <a href="../index.html" class="hover:underline">Home</a>
+      <a href="../internals.html" class="hover:underline">Hunting</a>
+      <a href="../myself.html" class="hover:underline">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Contenido de la técnica -->
+  <main class="flex-1 p-6">
+    <div class="content-box p-6 rounded-xl max-w-4xl mx-auto">
+      <h2 class="text-2xl font-bold glow-text mb-4">Enumerate ADCS using Windows Registry</h2>
+
+      <section class="mb-6">
+        <h3 class="text-xl font-semibold glow-text mb-2">Description</h3>
+        <p>
+Enumerate ADCS using Windows Registry means gathering information about Active Directory Certificate Services (ADCS) by inspecting relevant keys and values stored in the Windows Registry.
+      <section class="mb-6"><br>
+        <h3 class="text-xl font-semibold glow-text mb-2">Steps</h3>
+        <ol class="list-decimal list-inside space-y-2 break-words">
+          <li>Export HKEY_USERS\.DEFAULT\Software\Microsoft\Cryptography\CertificateTemplateCache to a .reg file</li>
+          <li>Exfiltrate the file and analyze it with certipy</li>
+        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+certipy parse -format reg -domain test.com -ca test-CA -published "ESC13, ESC9, ESC7_CERTMGR, ESC4, ESC3_CRA, ESC3, ESC2, ESC1, DirectoryEmailReplication, DomainControllerAuthentication, KerberosAuthentication, EFSRecovery, EFS, DomainController, WebServer, Machine, User, SubCA, Administrator" -sids "S-1-5-21-3291837554-245906837-2404182060-513,S-1-5-21-3291837554-245906837-2404182060-1104" adcs.reg
+        </pre>
+        </ol>
+      </section><br>
+      <p>Reference: https://blog.compass-security.com/2025/02/stealthy-ad-cs-reconnaissance/</p>
+    </div>
+  </main>
+
+</body>
+</html>

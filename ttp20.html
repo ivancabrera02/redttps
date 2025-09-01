@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Technique - redttps</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="../favicon.png" type="image/png">
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #ffffff;
+      font-family: monospace;
+    }
+    .content-box {
+      border: 2px dashed #00ff00;
+      background-color: #1a1a1a;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="w-full bg-black text-green-400 p-4 flex justify-between items-center shadow-md">
+    <h1 class="text-2xl font-bold glow-text">redttps</h1>
+    <nav class="space-x-4">
+      <a href="../index.html" class="hover:underline">Home</a>
+      <a href="../internals.html" class="hover:underline">Hunting</a>
+      <a href="../myself.html" class="hover:underline">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Contenido de la técnica -->
+  <main class="flex-1 p-6">
+    <div class="content-box p-6 rounded-xl max-w-4xl mx-auto">
+      <h2 class="text-2xl font-bold glow-text mb-4">WDAC to kill EDRs</h2>
+
+      <section class="mb-6">
+        <h3 class="text-xl font-semibold glow-text mb-2">Description</h3>
+        <p>
+The WDAC (Windows Defender Application Control) technique to kill EDR (Endpoint Detection and Response) involves abusing Microsoft’s application control policies to bypass or disable security software. Attackers can exploit misconfigurations or weaknesses in WDAC policies to run unsigned or malicious code that disables or interferes with EDR processes      <section class="mb-6"><br>
+        <h3 class="text-xl font-semibold glow-text mb-2">How it works</h3>
+        <ol class="list-decimal list-inside space-y-2 break-words">
+        <li>On your computer, download the App Control Policy Wizard application from Microsoft: https://webapp-wdac-wizard.azurewebsites.net/</li>
+        <li>Open the tool and follow the steps below: Policy Creator > Singel Policy Format > Default Windows Mode > Enable Disable Runtime Filepath Rules > Disable Audit Mode</li>
+        <li>Now go to Add Custom and create a custom policy. You will see several options such as creating an exclusion, locking a file by hash, it depends on your needs</li>
+        <li>When you are done save the policy, download SiPolicy.p7b file in the target pc and place in C:\Windows\System32\CodeIntegrity (Admin privileges needed) reboot and the policy will be applied</li>
+        </ol>
+      </section>
+    </div>
+  </main>
+
+</body>
+</html>

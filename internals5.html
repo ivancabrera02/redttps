@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hunting - redttps</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="../favicon.png" type="image/png">
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #ffffff;
+      font-family: monospace;
+    }
+    .content-box {
+      border: 2px dashed #00ff00;
+      background-color: #1a1a1a;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="w-full bg-black text-green-400 p-4 flex justify-between items-center shadow-md">
+    <h1 class="text-2xl font-bold glow-text">redttps</h1>
+    <nav class="space-x-4">
+      <a href="../index.html" class="hover:underline">Home</a>
+      <a href="../internals.html" class="hover:underline">Hunting</a>
+      <a href="../myself.html" class="hover:underline">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Contenido de la técnica -->
+  <main class="flex-1 p-6">
+    <div class="content-box p-6 rounded-xl max-w-4xl mx-auto">
+      <h2 class="text-2xl font-bold glow-text mb-4">AnyDesk makes a remote connection</h2>
+
+      <section class="mb-6">
+        <h3 class="text-xl font-semibold glow-text mb-2">Introduction</h3>
+        <p>         AnyDesk is a popular remote desktop application that allows users to connect to and control other devices over the internet. While it is commonly used for legitimate remote support and administration, AnyDesk can also be exploited by attackers to gain unauthorized remote access to systems, bypass security controls, and maintain persistence within a network. </p>
+      <section class="mb-6">
+        <h3 class="text-xl font-semibold glow-text mb-2">KQL</h3>
+        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+DeviceNetworkEvents
+| where InitiatingProcessFileName == "AnyDesk.exe"
+| where LocalIPType == "Private"
+| where RemoteIPType == "Public"
+| where RemoteUrl != "boot.net.anydesk.com" // Initial AnyDesk Connection when booted.
+| project
+     Timestamp,
+     DeviceId,
+     InitiatingProcessAccountName,
+     ActionType,
+     RemoteIP,
+     RemotePort,
+     RemoteUrl
+
+        </pre><br>
+          
+    <p>Reference: https://github.com/Bert-JanP/Hunting-Queries-Detection-Rules/blob/main/Defender%20For%20Endpoint/Network%20-%20AnyDeskConnectionToPublicIP.md</p>    
+      </section>
+    </div>
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Technique - redttps</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="../favicon.png" type="image/png">
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #ffffff;
+      font-family: monospace;
+    }
+    .content-box {
+      border: 2px dashed #00ff00;
+      background-color: #1a1a1a;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="w-full bg-black text-green-400 p-4 flex justify-between items-center shadow-md">
+    <h1 class="text-2xl font-bold glow-text">redttps</h1>
+    <nav class="space-x-4">
+      <a href="../index.html" class="hover:underline">Home</a>
+      <a href="../internals.html" class="hover:underline">Hunting</a>
+      <a href="../myself.html" class="hover:underline">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Contenido de la técnica -->
+  <main class="flex-1 p-6">
+    <div class="content-box p-6 rounded-xl max-w-4xl mx-auto">
+      <h2 class="text-2xl font-bold glow-text mb-4">Tunnel using Rust</h2>
+
+      <section class="mb-6">
+        <h3 class="text-xl font-semibold glow-text mb-2">Description</h3>
+        <p>
+A tunnel in networking refers to encapsulating one network protocol within another. In Rust, such a tunnel might be implemented to create a VPN, proxy, or port-forwarding system.
+      <section class="mb-6"><br>
+        <h3 class="text-xl font-semibold glow-text mb-2">Steps</h3>
+        <ol class="list-decimal list-inside space-y-2 break-words">
+          <li>Install localtunnel: cargo install localtunnel</li>
+          <li>Client-Side:</li>
+          <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+localtunnel client --host 'hostname' --subdomain 'domain' --port 'port'
+        </pre>
+          <li>Server-Side: </li>
+        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+localtunnel server --secure --domain init.so --port 'local port' --proxy-port 'proxy port'
+        </pre>
+        </ol>
+      </section>
+    </div>
+  </main>
+
+</body>
+</html>

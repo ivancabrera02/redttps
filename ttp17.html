@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Technique - redttps</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="../favicon.png" type="image/png">
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #ffffff;
+      font-family: monospace;
+    }
+    .content-box {
+      border: 2px dashed #00ff00;
+      background-color: #1a1a1a;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="w-full bg-black text-green-400 p-4 flex justify-between items-center shadow-md">
+    <h1 class="text-2xl font-bold glow-text">redttps</h1>
+    <nav class="space-x-4">
+      <a href="../index.html" class="hover:underline">Home</a>
+      <a href="../internals.html" class="hover:underline">Hunting</a>
+      <a href="../myself.html" class="hover:underline">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Contenido de la técnica -->
+  <main class="flex-1 p-6">
+    <div class="content-box p-6 rounded-xl max-w-4xl mx-auto">
+      <h2 class="text-2xl font-bold glow-text mb-4">List DLLs without GUI</h2>
+
+      <section class="mb-6">
+        <h3 class="text-xl font-semibold glow-text mb-2">Description</h3>
+        <p>
+ListDLLs is a utility that reports the DLLs loaded in processes. You can use it to list all DLLs loaded in all processes, in a specific process, or to list the processes that have a specific DLL loaded. ListDLLs can also display complete version information about the DLLs, including their digital signatures, and can be used to find unsigned DLLs in processes      <section class="mb-6"><br>
+        <h3 class="text-xl font-semibold glow-text mb-2">Steps</h3>
+        <ol class="list-decimal list-inside space-y-2 break-words">
+        <li>Download: https://learn.microsoft.com/es-es/sysinternals/downloads/listdlls</li>
+        <li>List all DLLs in the system</li>
+        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+listdlls
+        </pre>
+        <li>List all unsigned DLLs</li>
+        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+listdlls -u
+        </pre>
+        <li>List all DLLs in a process</li>
+        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+listdlls notepad.exe
+        </pre>
+        <li>Shows the processes that have loaded this DLL</li>
+        <pre class="bg-black text-green-400 p-4 rounded overflow-x-auto">
+listdlls -d mydll.dll
+        </pre>
+        </ol>
+      </section>
+    </div>
+  </main>
+
+</body>
+</html>
